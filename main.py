@@ -16,10 +16,9 @@ class Game:
         self.assets = {'background': load_image('background.png')}
 
     def run(self):
-        self.display.blit(self.assets['background'], (0, 0))
-
-
         while True:
+            self.display.blit(self.assets['background'], (0, 0))
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
