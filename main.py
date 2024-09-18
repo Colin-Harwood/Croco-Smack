@@ -1,6 +1,7 @@
 import sys
 
 import pygame
+from scripts.util import load_image
 
 class Game:
     def __init__(self):
@@ -12,7 +13,12 @@ class Game:
 
         self.clock = pygame.time.Clock()
 
+        self.assets = {'background': load_image('background.png')}
+
     def run(self):
+        self.display.blit(self.assets['background'], (0, 0))
+
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
