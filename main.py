@@ -13,11 +13,13 @@ class Game:
 
         self.clock = pygame.time.Clock()
 
-        self.assets = {'background': load_image('background.png')}
+        self.assets = {'background': load_image('background.png'),
+                       'player': load_image('character/Soldier-Attack1.png')}
 
     def run(self):
         while True:
             self.display.blit(self.assets['background'], (0, 0))
+            self.display.blit(self.assets['player'], (0, 0))
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
