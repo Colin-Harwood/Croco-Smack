@@ -44,7 +44,7 @@ class Game:
             self.tilemap.render(self.display, render_scroll)
 
             self.player.update((self.movement[1] - self.movement[0], 0))
-            self.player.render(self.display)
+            self.player.render(self.display, render_scroll)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
