@@ -20,7 +20,7 @@ class Game:
         self.assets = {
                         'background': load_image('background.png'),
                        'player': load_image('character/Soldier-Attack1.png'),
-                       'character/run': Animation(load_images('character/walk'), img_dur=6),
+                       'character/run': Animation(load_images('character/walk'), img_dur=9),
                        'character/attack': Animation(load_images('character/attack'), img_dur=6),
                        'character/idle': Animation(load_images('character/idle'), img_dur=6),
                        'character/jump': Animation(load_images('character/jump'), img_dur=6),
