@@ -30,7 +30,7 @@ class Game:
                         'stone': load_images('tiles/stone')
                         }
         
-        self.player = Player(self, (0, 0), (15, 18))
+        self.player = Player(self, (0, 0), (13, 18))
 
         self.tilemap = Tilemap(self, 16)
         self.tilemap.load('map.json')
