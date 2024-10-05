@@ -8,6 +8,7 @@ class PhysicsEntity:
         self.size = size
         self.velocity = [0, 0]
         self.collisions = {'up': False, 'down':False, 'left': False, 'right': False}
+        self.jump = 1
 
         self.action = ''
         self.anim_offset = (-3, -3)
@@ -59,6 +60,9 @@ class PhysicsEntity:
 
         if self.collisions['down'] or self.collisions['up']:
             self.velocity[1] = 0
+
+        if self.collisions['down']:
+            self.jump = 1
 
         self.animation.update()
 
