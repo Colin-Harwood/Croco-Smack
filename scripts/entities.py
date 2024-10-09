@@ -75,6 +75,7 @@ class Player(PhysicsEntity):
     def __init__(self, game, pos, size):
         super().__init__(game, 'character', pos, size)
         self.air_time = 0
+        self.attacking = 0
 
     def update(self, tilemap, movement=(0, 0)):
         super().update(tilemap, movement=movement)
@@ -83,9 +84,21 @@ class Player(PhysicsEntity):
         if self.collisions['down']:
             self.air_time = 0
 
-        if self.air_time > 4:
-            self.set_action('jump')
-        elif movement[0] != 0:
-            self.set_action('run')
+        if not self.attacking:
+            if self.air_time > 4:
+                self.set_action('jump')
+            elif movement[0] != 0:
+                self.set_action('run')
+            else:
+                self.set_action('idle')
         else:
-            self.set_action('idle')
+            self.set_action('attack')
+
+        if self.attacking > 0:
+            self.attacking = max(0, self.attacking - 1)
+
+#attack lasts for a certain amount of time, but in that time the player can still move so play the animation for that certain amount of time and still let the player move.
+#Also have the player only face one direction during the attack and increase the hitbox to the shovel length and let the player be in attack mode
+    def attack(self):
+        if not self.attacking:
+            self.attacking += 60
