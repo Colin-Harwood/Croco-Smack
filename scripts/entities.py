@@ -98,7 +98,7 @@ class Player(PhysicsEntity):
             self.attacking = max(0, self.attacking - 1)
 
     def rect(self):
-        if not self.attacking:
+        if self.action != 'attack':
             return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
         else:
             #update so that the hitbox starts further along the pplayer and so that the player back sword awing and above isnt counted as part of hihtbox
@@ -123,4 +123,4 @@ class Player(PhysicsEntity):
 #Also have the player only face one direction during the attack and increase the hitbox to the shovel length and let the player be in attack mode
     def attack(self):
         if not self.attacking:
-            self.attacking += 29
+            self.attacking += 36
