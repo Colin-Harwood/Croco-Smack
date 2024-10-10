@@ -103,10 +103,24 @@ class Player(PhysicsEntity):
         else:
             #update so that the hitbox starts further along the pplayer and so that the player back sword awing and above isnt counted as part of hihtbox
             #also player images need resized to be size of the biggest needed measurements so that the hitbox casn be a constant amount forward and down
-            return pygame.Rect(self.pos[0], self.pos[1], self.size[0] + 8, self.size[1] + 5)
+            if self.flip:
+                return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
+            else:
+                return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
+            
+    def render(self, surf, offset=(0, 0)):
+        if not self.attacking:
+            surf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0] - offset[0], self.pos[1] - offset[1]))
+        else:
+            #update so that the hitbox starts further along the pplayer and so that the player back sword awing and above isnt counted as part of hihtbox
+            #also player images need resized to be size of the biggest needed measurements so that the hitbox casn be a constant amount forward and down
+            if self.flip:
+                surf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0] - offset[0] - 8, self.pos[1] - offset[1] - 4))
+            else:
+                surf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0] - offset[0] - 7, self.pos[1] - offset[1] - 4))
 
 #attack lasts for a certain amount of time, but in that time the player can still move so play the animation for that certain amount of time and still let the player move.
 #Also have the player only face one direction during the attack and increase the hitbox to the shovel length and let the player be in attack mode
     def attack(self):
         if not self.attacking:
-            self.attacking += 30
+            self.attacking += 29
