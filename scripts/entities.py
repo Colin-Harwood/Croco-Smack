@@ -84,6 +84,9 @@ class Player(PhysicsEntity):
         if self.collisions['down']:
             self.air_time = 0
 
+        if self.attacking > 0:
+            self.attacking = max(0, self.attacking - 1)
+
         if not self.attacking:
             if self.air_time > 4:
                 self.set_action('jump')
@@ -93,9 +96,6 @@ class Player(PhysicsEntity):
                 self.set_action('idle')
         else:
             self.set_action('attack')
-
-        if self.attacking > 0:
-            self.attacking = max(0, self.attacking - 1)
 
     def rect(self):
         if self.action != 'attack':
@@ -109,7 +109,7 @@ class Player(PhysicsEntity):
                 return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
             
     def render(self, surf, offset=(0, 0)):
-        if not self.attacking:
+        if self.attacking <= 0:
             surf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0] - offset[0], self.pos[1] - offset[1]))
         else:
             #update so that the hitbox starts further along the pplayer and so that the player back sword awing and above isnt counted as part of hihtbox
@@ -124,3 +124,8 @@ class Player(PhysicsEntity):
     def attack(self):
         if not self.attacking:
             self.attacking += 36
+
+
+class Croc(PhysicsEntity):
+    def __init__(self, game, pos, size):
+        super().__init__(game, 'croc', pos, size)

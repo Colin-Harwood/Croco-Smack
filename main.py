@@ -24,6 +24,7 @@ class Game:
                        'character/attack': Animation(load_images('character/attack'), img_dur=6),
                        'character/idle': Animation(load_images('character/idle'), img_dur=6),
                        'character/jump': Animation(load_images('character/jump'), img_dur=6),
+                       'croc/run': Animation(load_images('croc/walk'), img_dur=8),
                        'decor': load_images('tiles/decor'),
                         'grass': load_images('tiles/grass'),
                         'large_decor': load_images('tiles/large_decor'),
@@ -31,6 +32,7 @@ class Game:
                         }
         
         self.player = Player(self, (0, 0), (13, 18))
+        self.croc = PhysicsEntity(self, 'croc', (20, 0), (18, 14))
 
         self.tilemap = Tilemap(self, 16)
         self.tilemap.load('map.json')
@@ -47,6 +49,9 @@ class Game:
 
             self.tilemap.render(self.display, render_scroll)
 
+            self.croc.update(self.tilemap, (0, 0))
+            self.croc.render(self.display, render_scroll)
+
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
             self.player.render(self.display, offset=render_scroll)
 
@@ -61,6 +66,7 @@ class Game:
                         self.movement[1] = True
                     if event.key == pygame.K_UP and self.player.jump > 0:
                         self.player.velocity[1] = -3
+                        self.player.jump = 0
                     if event.key == pygame.K_c:
                         self.player.attack()
                 if event.type == pygame.KEYUP:
