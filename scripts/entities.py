@@ -142,10 +142,4 @@ class Croc(PhysicsEntity):
 
         super().update(tilemap=tilemap, movement=movement)
 
-    def render(self, surf, offset=(0, 0)):
-        super().render(surf, offset=offset)
-        
-        if self.flip:
-            surf.blit(pygame.transform.flip(self.game.assets['croc/run'].img(), True, False), (self.rect().centerx - 4 - self.game.assets['croc/run'].img().get_width() - offset[0], self.rect().centery - offset[1]))
-        else:
-            surf.blit(self.game.assets['croc/run'].img(), (self.rect().centerx + 4 - offset[0], self.rect().centery - offset[1]))
+    
