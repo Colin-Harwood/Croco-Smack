@@ -1,4 +1,5 @@
 import pygame
+import random
 
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
@@ -129,3 +130,22 @@ class Player(PhysicsEntity):
 class Croc(PhysicsEntity):
     def __init__(self, game, pos, size):
         super().__init__(game, 'croc', pos, size)
+
+    def update(self, tilemap, movement):
+        if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 14)):
+                if (self.collisions['right'] or self.collisions['left']):
+                    self.flip = not self.flip
+                else:
+                    movement = (movement[0] - 0.5 if self.flip else 0.5, movement[1])
+        else:
+            self.flip = not self.flip
+
+        super().update(tilemap=tilemap, movement=movement)
+
+    def render(self, surf, offset=(0, 0)):
+        super().render(surf, offset=offset)
+        
+        if self.flip:
+            surf.blit(pygame.transform.flip(self.game.assets['croc/run'].img(), True, False), (self.rect().centerx - 4 - self.game.assets['croc/run'].img().get_width() - offset[0], self.rect().centery - offset[1]))
+        else:
+            surf.blit(self.game.assets['croc/run'].img(), (self.rect().centerx + 4 - offset[0], self.rect().centery - offset[1]))

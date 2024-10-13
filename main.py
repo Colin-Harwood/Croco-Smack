@@ -2,7 +2,7 @@ import sys
 
 import pygame
 from scripts.util import load_image, load_images, Animation
-from scripts.entities import PhysicsEntity, Player
+from scripts.entities import PhysicsEntity, Player, Croc
 from scripts.tilemap import Tilemap
 
 class Game:
@@ -32,7 +32,7 @@ class Game:
                         }
         
         self.player = Player(self, (0, 0), (13, 18))
-        self.croc = PhysicsEntity(self, 'croc', (20, 0), (18, 14))
+        self.croc = Croc(self, (20, 0), (18, 14))
 
         self.tilemap = Tilemap(self, 16)
         self.tilemap.load('map.json')
@@ -50,7 +50,7 @@ class Game:
             self.tilemap.render(self.display, render_scroll)
 
             self.croc.update(self.tilemap, (0, 0))
-            self.croc.render(self.display, render_scroll)
+            self.croc.render(self.display, offset=render_scroll)
 
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
             self.player.render(self.display, offset=render_scroll)
