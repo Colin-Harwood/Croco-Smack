@@ -25,6 +25,7 @@ class Game:
                        'character/idle': Animation(load_images('character/idle'), img_dur=6),
                        'character/jump': Animation(load_images('character/jump'), img_dur=6),
                        'croc/run': Animation(load_images('croc/walk'), img_dur=8),
+                       'croc/die': Animation(load_images('croc/die'), img_dur=6, loop=False),
                        'decor': load_images('tiles/decor'),
                         'grass': load_images('tiles/grass'),
                         'large_decor': load_images('tiles/large_decor'),
@@ -49,7 +50,7 @@ class Game:
 
             self.tilemap.render(self.display, render_scroll)
 
-            self.croc.update(self.tilemap, (0, 0))
+            self.croc.update(self.tilemap, (0, 0), self.player)
             self.croc.render(self.display, offset=render_scroll)
 
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))

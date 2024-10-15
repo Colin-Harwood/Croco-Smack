@@ -130,16 +130,26 @@ class Player(PhysicsEntity):
 class Croc(PhysicsEntity):
     def __init__(self, game, pos, size):
         super().__init__(game, 'croc', pos, size)
+        self.dead = False
 
-    def update(self, tilemap, movement):
-        if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 14)):
-                if (self.collisions['right'] or self.collisions['left']):
-                    self.flip = not self.flip
-                else:
-                    movement = (movement[0] - 0.5 if self.flip else 0.5, movement[1])
+    def update(self, tilemap, movement, player):
+        if self.dead:
+            self.set_action('die')
+            if self.animation.done:
+                pass
         else:
-            self.flip = not self.flip
+            if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 14)):
+                    if (self.collisions['right'] or self.collisions['left']):
+                        self.flip = not self.flip
+                    else:
+                        movement = (movement[0] - 0.5 if self.flip else 0.5, movement[1])
+            else:
+                self.flip = not self.flip
 
         super().update(tilemap=tilemap, movement=movement)
 
-    
+        self.die(player)
+
+    def die(self, player):
+        if player.attacking and self.rect().colliderect(player.rect()):
+            self.dead = True
