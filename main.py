@@ -40,9 +40,19 @@ class Game:
 
         self.scroll = [0, 0]
 
+        self.enemies = []
+
+    def load_level(self):
+        self.enemies = []
+        for spawner in self.tilemap.extract([('spawners', 1)]):
+            self.enemies.append(Croc(self, spawner['pos'], (18, 14)))
+
     def run(self):
         while True:
             self.display.blit(self.assets['background'], (0, 0))
+
+            if not len(self.enemies):
+                self.load_level()
 
             self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
             self.scroll[1] += (self.player.rect().centery - self.display.get_height() / 2 - self.scroll[1]) / 30
@@ -50,8 +60,11 @@ class Game:
 
             self.tilemap.render(self.display, render_scroll)
 
-            self.croc.update(self.tilemap, (0, 0), self.player)
-            self.croc.render(self.display, offset=render_scroll)
+            for enemy in self.enemies.copy():
+                enemy.update(self.tilemap, (0, 0), self.player)
+                enemy.render(self.display, offset=render_scroll)
+                if enemy.dead:
+                    self.enemies.remove(enemy)
 
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
             self.player.render(self.display, offset=render_scroll)
