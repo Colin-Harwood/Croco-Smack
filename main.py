@@ -63,7 +63,7 @@ class Game:
             for enemy in self.enemies.copy():
                 enemy.update(self.tilemap, (0, 0), self.player)
                 enemy.render(self.display, offset=render_scroll)
-                if enemy.dead:
+                if enemy.animation.done:
                     self.enemies.remove(enemy)
 
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
