@@ -151,7 +151,7 @@ class Croc(PhysicsEntity):
         self.die(player)
 
     def die(self, player):
-        if self.flip:
+        if player.flip:
             playerSwing = pygame.Rect(player.rect().left - 5, player.rect().top, player.rect().width + 5, player.rect().height)
         else:  
             playerSwing = pygame.Rect(player.rect().left, player.rect().top, player.rect().width + 5, player.rect().height)
