@@ -151,5 +151,11 @@ class Croc(PhysicsEntity):
         self.die(player)
 
     def die(self, player):
-        if player.attacking and self.rect().colliderect(player.rect()):
+        if self.flip:
+            playerSwing = pygame.Rect(player.rect().left - 5, player.rect().top, player.rect().width + 5, player.rect().height)
+        else:  
+            playerSwing = pygame.Rect(player.rect().left, player.rect().top, player.rect().width + 5, player.rect().height)
+        if player.attacking and self.rect().colliderect(playerSwing):
             self.dead = True
+        print("Player rect:", player.rect())
+        print("Player swing rect:", playerSwing)

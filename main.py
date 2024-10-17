@@ -36,16 +36,23 @@ class Game:
         self.croc = Croc(self, (20, 0), (18, 14))
 
         self.tilemap = Tilemap(self, 16)
-        self.tilemap.load('map.json')
 
         self.scroll = [0, 0]
 
         self.enemies = []
 
+        self.load_level()
+
     def load_level(self):
+        self.tilemap.load('map.json')
+
         self.enemies = []
-        for spawner in self.tilemap.extract([('spawners', 1)]):
-            self.enemies.append(Croc(self, spawner['pos'], (18, 14)))
+        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1)]):
+            if spawner['variant'] == 0:
+                self.player.pos = spawner['pos']
+                self.player.air_time = 0
+            else:
+                self.enemies.append(Croc(self, spawner['pos'], (18, 14)))
 
     def run(self):
         while True:
