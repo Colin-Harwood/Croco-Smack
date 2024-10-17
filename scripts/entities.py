@@ -126,11 +126,11 @@ class Player(PhysicsEntity):
         if not self.attacking:
             self.attacking += 36
 
-
 class Croc(PhysicsEntity):
     def __init__(self, game, pos, size):
         super().__init__(game, 'croc', pos, size)
         self.dead = False
+        self.killedPlayer = False
 
     def update(self, tilemap, movement, player):
         if self.dead:
@@ -149,6 +149,7 @@ class Croc(PhysicsEntity):
         super().update(tilemap=tilemap, movement=movement)
 
         self.die(player)
+        self.kill(player)
 
     def die(self, player):
         if player.flip:
@@ -157,5 +158,7 @@ class Croc(PhysicsEntity):
             playerSwing = pygame.Rect(player.rect().left, player.rect().top, player.rect().width + 5, player.rect().height)
         if player.attacking and self.rect().colliderect(playerSwing):
             self.dead = True
-        print("Player rect:", player.rect())
-        print("Player swing rect:", playerSwing)
+
+    def kill(self, player):
+        if not player.attacking and self.rect().colliderect(player.rect()) and not self.dead:
+            self.killedPlayer = True

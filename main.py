@@ -72,6 +72,8 @@ class Game:
                 enemy.render(self.display, offset=render_scroll)
                 if enemy.animation.done:
                     self.enemies.remove(enemy)
+                if enemy.killedPlayer:
+                    self.load_level()
 
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
             self.player.render(self.display, offset=render_scroll)
