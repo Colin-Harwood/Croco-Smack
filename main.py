@@ -42,10 +42,11 @@ class Game:
 
         self.enemies = []
 
+        self.level = 1
         self.load_level()
 
     def load_level(self):
-        self.tilemap.load('map.json')
+        self.tilemap.load('data/maps/' + str(self.level) + '.json')
 
         self.enemies = []
         for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1)]):
@@ -60,6 +61,10 @@ class Game:
             self.display.blit(self.assets['background'], (0, 0))
 
             if not len(self.enemies):
+                if self.level + 1 <= 3:
+                    self.level += 1
+                else:
+                    self.level = 1
                 self.load_level()
 
             self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
@@ -74,6 +79,7 @@ class Game:
                 if enemy.animation.done:
                     self.enemies.remove(enemy)
                 if enemy.killedPlayer:
+                    self.level = 1
                     self.load_level()
 
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
