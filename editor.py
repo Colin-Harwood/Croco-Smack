@@ -29,8 +29,10 @@ class Editor:
         
         self.tilemap = Tilemap(self, tile_size=16)
         
+        self.level = 1
+
         try:
-            self.tilemap.load('map.json')
+            self.tilemap.load('data/maps/' + str(self.level) + '.json')
         except FileNotFoundError:
             pass
         
@@ -44,6 +46,8 @@ class Editor:
         self.right_clicking = False
         self.shift = False
         self.ongrid = True
+
+        self.font = pygame.font.SysFont("comicsans", 20)
         
     def run(self):
         while True:
@@ -125,9 +129,16 @@ class Editor:
                     if event.key == pygame.K_t:
                         self.tilemap.autotile()
                     if event.key == pygame.K_o:
-                        self.tilemap.save('map.json')
+                        self.tilemap.save('data/maps/' + str(self.level) + '.json')
                     if event.key == pygame.K_LSHIFT:
                         self.shift = True
+                    if event.key == pygame.K_LCTRL:
+                        try:
+                            self.tilemap.load('data/maps/' + str(self.level + 1) + '.json')
+                            self.level += 1
+                        except FileNotFoundError:
+                            self.level = 1
+                            self.tilemap.load('data/maps/' + str(self.level) + '.json')
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a:
                         self.movement[0] = False
@@ -139,6 +150,10 @@ class Editor:
                         self.movement[3] = False
                     if event.key == pygame.K_LSHIFT:
                         self.shift = False
+
+            level_message = self.font.render(str(self.level) ,False,(255, 255, 255))
+            level_message_rect = level_message.get_rect(center = (265, 40))
+            self.display.blit(level_message,level_message_rect)
             
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.update()
