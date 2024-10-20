@@ -26,6 +26,7 @@ class Game:
                        'character/jump': Animation(load_images('character/jump'), img_dur=6),
                        'croc/run': Animation(load_images('croc/walk'), img_dur=8),
                        'croc/die': Animation(load_images('croc/die'), img_dur=6, loop=False),
+                       'croc/idle': Animation(load_images('croc/idle'), img_dur=6),
                        'decor': load_images('tiles/decor'),
                         'grass': load_images('tiles/grass'),
                         'large_decor': load_images('tiles/large_decor'),

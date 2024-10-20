@@ -77,6 +77,7 @@ class Player(PhysicsEntity):
         super().__init__(game, 'character', pos, size)
         self.air_time = 0
         self.attacking = 0
+        self.attackCooldown = 0
 
     def update(self, tilemap, movement=(0, 0)):
         super().update(tilemap, movement=movement)
@@ -87,6 +88,9 @@ class Player(PhysicsEntity):
 
         if self.attacking > 0:
             self.attacking = max(0, self.attacking - 1)
+
+        if self.attackCooldown > 0:
+            self.attackCooldown = max(0, self.attackCooldown - 1)
 
         if not self.attacking:
             if self.air_time > 4:
@@ -123,14 +127,17 @@ class Player(PhysicsEntity):
 #attack lasts for a certain amount of time, but in that time the player can still move so play the animation for that certain amount of time and still let the player move.
 #Also have the player only face one direction during the attack and increase the hitbox to the shovel length and let the player be in attack mode
     def attack(self):
-        if not self.attacking:
+        if not self.attacking and not self.attackCooldown:
             self.attacking += 36
+            self.attackCooldown = 60
 
 class Croc(PhysicsEntity):
     def __init__(self, game, pos, size):
         super().__init__(game, 'croc', pos, size)
         self.dead = False
         self.killedPlayer = False
+        self.walking = 0
+        self.movementSpeed = random.randint(5, 9) / 10
 
     def update(self, tilemap, movement, player):
         if self.dead:
@@ -138,13 +145,20 @@ class Croc(PhysicsEntity):
             if self.animation.done:
                 pass
         else:
-            if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 14)):
-                    if (self.collisions['right'] or self.collisions['left']):
-                        self.flip = not self.flip
-                    else:
-                        movement = (movement[0] - 0.5 if self.flip else 0.5, movement[1])
+            if self.walking:
+                self.set_action('run')
+                if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 14)):
+                        if (self.collisions['right'] or self.collisions['left']):
+                            self.flip = not self.flip
+                        else:
+                            movement = (movement[0] - self.movementSpeed if self.flip else self.movementSpeed, movement[1])
+                else:
+                    self.flip = not self.flip
+                self.walking = max(0, self.walking - 1)
+            elif random.random() < 0.03:
+                self.walking = random.randint(160, 290)
             else:
-                self.flip = not self.flip
+                self.set_action('idle')
 
         super().update(tilemap=tilemap, movement=movement)
 
