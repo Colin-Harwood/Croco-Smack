@@ -78,7 +78,7 @@ class Game:
                 enemy.render(self.display, offset=render_scroll)
                 if enemy.animation.done:
                     self.enemies.remove(enemy)
-                if enemy.killedPlayer:
+                if enemy.killedPlayer or self.player.pos[1] > 600:
                     self.level = 1
                     self.load_level()
 
