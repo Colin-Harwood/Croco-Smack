@@ -2,7 +2,7 @@
 
 <h1>A python pygame platformer where the player controls a meidieval knight and has to smack all the crocodiles with a shovel.</h1>
 
-![image](https://github.com/user-attachments/assets/6a7b136c-546f-49c1-bf35-890e87c8b175)
+![image](https://github.com/user-attachments/assets/7b5eba1e-352f-4bdf-9f12-3340cea76e75)
 
 <h2>In order to run the game please just run the main.py file inside of the whole folder!</h2>
 
